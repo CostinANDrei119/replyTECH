@@ -17,13 +17,7 @@ import java.util.List;
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {
 
-    /**
-     * Find all products with name containing the search term (case-insensitive)
-     * 
-     * @param name search term to match against product names
-     * @return list of products matching the search criteria
-     */
-    List<Product> findByNameContainingIgnoreCase(String name);
+    
 
     /**
      * Find all products in a specific category
@@ -31,7 +25,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
      * @param category the category to search for
      * @return list of products in the specified category
      */
-    List<Product> findByCategory(String category);
+    List<Product> findByCategorie(String categorie);
 
     /**
      * Find all products by seller name
@@ -39,7 +33,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
      * @param sellerName the seller to search for
      * @return list of products from the specified seller
      */
-    List<Product> findBySellerName(String sellerName);
+    List<Product> findByNumeVanzator(String numeVanzator);
 
     /**
      * Find products within a price range (inclusive)
@@ -48,8 +42,8 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
      * @param maxPrice maximum price
      * @return list of products within the price range
      */
-    @Query("SELECT p FROM Product p WHERE p.price BETWEEN :minPrice AND :maxPrice")
-    List<Product> findByPriceBetween(@Param("minPrice") BigDecimal minPrice, 
+    @Query("SELECT p FROM Product p WHERE p.pret BETWEEN :minPrice AND :maxPrice")
+    List<Product> findByPretBetween(@Param("minPrice") BigDecimal minPrice, 
                                      @Param("maxPrice") BigDecimal maxPrice);
 
     /**
@@ -60,17 +54,19 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
      * @param maxPrice maximum price
      * @return list of products matching all criteria
      */
-    @Query("SELECT p FROM Product p WHERE LOWER(p.name) LIKE LOWER(CONCAT('%', :name, '%')) " +
-           "AND p.price BETWEEN :minPrice AND :maxPrice")
-    List<Product> findByNameAndPriceRange(@Param("name") String name, 
-                                         @Param("minPrice") BigDecimal minPrice,
-                                         @Param("maxPrice") BigDecimal maxPrice);
+        @Query("SELECT p FROM Product p WHERE LOWER(p.nume) LIKE LOWER(CONCAT('%', :name, '%')) " +
+            "AND p.pret BETWEEN :minPrice AND :maxPrice")
+        List<Product> findByNumeAndPretRange(@Param("name") String name, 
+                              @Param("minPrice") BigDecimal minPrice,
+                              @Param("maxPrice") BigDecimal maxPrice);
 
     /**
      * Find products in stock (quantity > 0)
      * 
      * @return list of products that have quantity greater than 0
      */
-    @Query("SELECT p FROM Product p WHERE p.quantity > 0")
+    @Query("SELECT p FROM Product p WHERE p.cantitate > 0")
     List<Product> findInStockProducts();
+
+    List<Product> findByNumeContainingIgnoreCase(String nume);
 }

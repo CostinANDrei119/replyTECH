@@ -18,58 +18,57 @@ import java.math.BigDecimal;
 @Builder
 @Schema(description = "Product Request DTO for creating/updating products")
 public class ProductRequestDto {
+    /**
+     * Nume - required
+     */
+    @NotBlank(message = "Nume este obligatoriu")
+    @Size(min = 3, max = 255, message = "Numele trebuie sa fie intre 3 si 255 caractere")
+    @Schema(description = "Nume produs", example = "Laptop", requiredMode = Schema.RequiredMode.REQUIRED)
+    private String nume;
 
     /**
-     * Product name (required, 3-255 characters)
+     * Descriere - optional
      */
-    @NotBlank(message = "Product name is required")
-    @Size(min = 3, max = 255, message = "Product name must be between 3 and 255 characters")
-    @Schema(description = "Name of the product", example = "Laptop", requiredMode = Schema.RequiredMode.REQUIRED)
-    private String name;
+    @Size(max = 1000, message = "Descrierea nu poate depasi 1000 caractere")
+    @Schema(description = "Descriere produs", example = "Laptop performant cu 16GB RAM")
+    private String descriere;
 
     /**
-     * Product description (optional, max 1000 characters)
+     * Categorie - required
      */
-    @Size(max = 1000, message = "Description cannot exceed 1000 characters")
-    @Schema(description = "Detailed description of the product", example = "High-performance laptop with 16GB RAM")
-    private String description;
+    @NotBlank(message = "Categorie este obligatorie")
+    @Size(min = 2, max = 100, message = "Categoria trebuie sa fie intre 2 si 100 caractere")
+    @Schema(description = "Categorie produs", example = "Electronice", requiredMode = Schema.RequiredMode.REQUIRED)
+    private String categorie;
 
     /**
-     * Product category (required, 2-100 characters)
+     * Subcategorie - optional
      */
-    @NotBlank(message = "Category is required")
-    @Size(min = 2, max = 100, message = "Category must be between 2 and 100 characters")
-    @Schema(description = "Category of the product", example = "Electronics", requiredMode = Schema.RequiredMode.REQUIRED)
-    private String category;
+    @Size(max = 100, message = "Subcategoria nu poate depasi 100 caractere")
+    @Schema(description = "Subcategorie produs", example = "Laptopuri")
+    private String subcategorie;
 
     /**
-     * Product subcategory (optional, max 100 characters)
+     * Nume vanzator - required
      */
-    @Size(max = 100, message = "Subcategory cannot exceed 100 characters")
-    @Schema(description = "Subcategory of the product", example = "Laptops")
-    private String subcategory;
+    @NotBlank(message = "Nume vanzator este obligatoriu")
+    @Size(min = 2, max = 255, message = "Numele vanzatorului trebuie sa fie intre 2 si 255 caractere")
+    @Schema(description = "Nume vanzator", example = "Magazin Tech SRL", requiredMode = Schema.RequiredMode.REQUIRED)
+    private String numeVanzator;
 
     /**
-     * Seller name (required, 2-255 characters)
+     * Pret - required
      */
-    @NotBlank(message = "Seller name is required")
-    @Size(min = 2, max = 255, message = "Seller name must be between 2 and 255 characters")
-    @Schema(description = "Name of the seller", example = "Tech Store Inc.", requiredMode = Schema.RequiredMode.REQUIRED)
-    private String sellerName;
+    @NotNull(message = "Pretul este obligatoriu")
+    @DecimalMin(value = "0.01", message = "Pretul trebuie sa fie mai mare decat 0")
+    @Schema(description = "Pret produs", example = "999.99", requiredMode = Schema.RequiredMode.REQUIRED)
+    private BigDecimal pret;
 
     /**
-     * Product price (required, must be > 0)
+     * Cantitate - required
      */
-    @NotNull(message = "Price is required")
-    @DecimalMin(value = "0.01", message = "Price must be greater than 0")
-    @Schema(description = "Price of the product", example = "999.99", requiredMode = Schema.RequiredMode.REQUIRED)
-    private BigDecimal price;
-
-    /**
-     * Available quantity (required, must be >= 0)
-     */
-    @NotNull(message = "Quantity is required")
-    @Min(value = 0, message = "Quantity cannot be negative")
-    @Schema(description = "Available quantity in stock", example = "50", requiredMode = Schema.RequiredMode.REQUIRED)
-    private Integer quantity;
+    @NotNull(message = "Cantitatea este obligatorie")
+    @Min(value = 0, message = "Cantitatea nu poate fi negativa")
+    @Schema(description = "Cantitate disponibila", example = "50", requiredMode = Schema.RequiredMode.REQUIRED)
+    private Integer cantitate;
 }

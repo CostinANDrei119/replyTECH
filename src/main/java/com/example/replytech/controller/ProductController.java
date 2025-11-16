@@ -86,7 +86,7 @@ public class ProductController {
     })
     public ResponseEntity<ProductResponseDto> createProduct(
             @Valid @RequestBody ProductRequestDto requestDto) {
-        log.info("POST /api/products - Creating new product: {}", requestDto.getName());
+        log.info("POST /api/products - Creating new product: {}", requestDto.getNume());
         ProductResponseDto createdProduct = productService.createProduct(requestDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdProduct);
     }

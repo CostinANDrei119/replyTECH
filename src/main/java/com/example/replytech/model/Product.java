@@ -28,84 +28,56 @@ public class Product {
     private Long id;
 
     /**
-     * Product name (required, max 255 characters)
+     * Nume (product name) - required
      */
-    @NotBlank(message = "Product name is required")
-    @Size(min = 3, max = 255, message = "Product name must be between 3 and 255 characters")
-    @Column(nullable = false)
-    private String name;
+    @NotBlank(message = "Nume este obligatoriu")
+    @Size(min = 3, max = 255, message = "Numele trebuie sa fie intre 3 si 255 caractere")
+    @Column(name = "nume", nullable = false)
+    private String nume;
 
     /**
-     * Product description (optional, max 1000 characters)
+     * Descriere (description) - optional
      */
-    @Size(max = 1000, message = "Description cannot exceed 1000 characters")
-    @Column(columnDefinition = "TEXT")
-    private String description;
+    @Size(max = 1000, message = "Descrierea nu poate depasi 1000 caractere")
+    @Column(name = "descriere", columnDefinition = "TEXT")
+    private String descriere;
 
     /**
-     * Product category (required, e.g., "Electronics", "Clothing")
+     * Categorie - required
      */
-    @NotBlank(message = "Category is required")
-    @Size(min = 2, max = 100, message = "Category must be between 2 and 100 characters")
-    @Column(nullable = false)
-    private String category;
+    @NotBlank(message = "Categorie este obligatorie")
+    @Size(min = 2, max = 100, message = "Categoria trebuie sa fie intre 2 si 100 caractere")
+    @Column(name = "categorie", nullable = false)
+    private String categorie;
 
     /**
-     * Product subcategory (optional, e.g., "Mobile Phones", "T-Shirts")
+     * Subcategorie - optional
      */
-    @Size(max = 100, message = "Subcategory cannot exceed 100 characters")
-    private String subcategory;
+    @Size(max = 100, message = "Subcategoria nu poate depasi 100 caractere")
+    @Column(name = "subcategorie")
+    private String subcategorie;
 
     /**
-     * Seller name (required)
+     * Nume vanzator (seller name) - required
      */
-    @NotBlank(message = "Seller name is required")
-    @Size(min = 2, max = 255, message = "Seller name must be between 2 and 255 characters")
-    @Column(nullable = false)
-    private String sellerName;
+    @NotBlank(message = "Nume vanzator este obligatoriu")
+    @Size(min = 2, max = 255, message = "Numele vanzatorului trebuie sa fie intre 2 si 255 caractere")
+    @Column(name = "nume_vanzator", nullable = false)
+    private String numeVanzator;
 
     /**
-     * Product price (required, must be positive)
+     * Pret (price) - required
      */
-    @NotNull(message = "Price is required")
-    @DecimalMin(value = "0.01", message = "Price must be greater than 0")
-    @Column(nullable = false, precision = 10, scale = 2)
-    private BigDecimal price;
+    @NotNull(message = "Pretul este obligatoriu")
+    @DecimalMin(value = "0.01", message = "Pretul trebuie sa fie mai mare decat 0")
+    @Column(name = "pret", nullable = false, precision = 10, scale = 2)
+    private BigDecimal pret;
 
     /**
-     * Available quantity in stock (required, must be non-negative)
+     * Cantitate (quantity) - required
      */
-    @NotNull(message = "Quantity is required")
-    @Min(value = 0, message = "Quantity cannot be negative")
-    @Column(nullable = false)
-    private Integer quantity;
-
-    /**
-     * Timestamp when product was created (auto-set)
-     */
-    @Column(nullable = false, updatable = false)
-    private java.time.LocalDateTime createdAt;
-
-    /**
-     * Timestamp when product was last updated (auto-updated)
-     */
-    @Column(nullable = false)
-    private java.time.LocalDateTime updatedAt;
-
-    /**
-     * Pre-persist hook to set creation timestamp
-     */
-    @PrePersist
-    protected void onCreate() {
-        createdAt = java.time.LocalDateTime.now();
-        updatedAt = java.time.LocalDateTime.now();
-    }
-
-    /**
-     * Pre-update hook to update modification timestamp
-     */
-    @PreUpdate
-    protected void onUpdate() {
-        updatedAt = java.time.LocalDateTime.now();
-    }
+    @NotNull(message = "Cantitatea este obligatorie")
+    @Min(value = 0, message = "Cantitatea nu poate fi negativa")
+    @Column(name = "cantitate", nullable = false)
+    private Integer cantitate;
 }

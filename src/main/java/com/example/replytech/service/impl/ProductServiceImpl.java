@@ -38,15 +38,13 @@ public class ProductServiceImpl implements ProductService {
         log.debug("Converting Product entity to ProductResponseDto for product ID: {}", product.getId());
         return ProductResponseDto.builder()
                 .id(product.getId())
-                .name(product.getName())
-                .description(product.getDescription())
-                .category(product.getCategory())
-                .subcategory(product.getSubcategory())
-                .sellerName(product.getSellerName())
-                .price(product.getPrice())
-                .quantity(product.getQuantity())
-                .createdAt(product.getCreatedAt())
-                .updatedAt(product.getUpdatedAt())
+                .nume(product.getNume())
+                .descriere(product.getDescriere())
+                .categorie(product.getCategorie())
+                .subcategorie(product.getSubcategorie())
+                .numeVanzator(product.getNumeVanzator())
+                .pret(product.getPret())
+                .cantitate(product.getCantitate())
                 .build();
     }
 
@@ -59,13 +57,13 @@ public class ProductServiceImpl implements ProductService {
     private Product convertToEntity(ProductRequestDto requestDto) {
         log.debug("Converting ProductRequestDto to Product entity");
         return Product.builder()
-                .name(requestDto.getName())
-                .description(requestDto.getDescription())
-                .category(requestDto.getCategory())
-                .subcategory(requestDto.getSubcategory())
-                .sellerName(requestDto.getSellerName())
-                .price(requestDto.getPrice())
-                .quantity(requestDto.getQuantity())
+                .nume(requestDto.getNume())
+                .descriere(requestDto.getDescriere())
+                .categorie(requestDto.getCategorie())
+                .subcategorie(requestDto.getSubcategorie())
+                .numeVanzator(requestDto.getNumeVanzator())
+                .pret(requestDto.getPret())
+                .cantitate(requestDto.getCantitate())
                 .build();
     }
 
@@ -93,7 +91,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductResponseDto createProduct(ProductRequestDto requestDto) {
-        log.info("Creating new product: {}", requestDto.getName());
+        log.info("Creating new product: {}", requestDto.getNume());
         Product product = convertToEntity(requestDto);
         Product savedProduct = productRepository.save(product);
         log.info("Product created successfully with ID: {}", savedProduct.getId());
@@ -110,13 +108,13 @@ public class ProductServiceImpl implements ProductService {
                 });
 
         // Update product fields from request DTO
-        product.setName(requestDto.getName());
-        product.setDescription(requestDto.getDescription());
-        product.setCategory(requestDto.getCategory());
-        product.setSubcategory(requestDto.getSubcategory());
-        product.setSellerName(requestDto.getSellerName());
-        product.setPrice(requestDto.getPrice());
-        product.setQuantity(requestDto.getQuantity());
+        product.setNume(requestDto.getNume());
+        product.setDescriere(requestDto.getDescriere());
+        product.setCategorie(requestDto.getCategorie());
+        product.setSubcategorie(requestDto.getSubcategorie());
+        product.setNumeVanzator(requestDto.getNumeVanzator());
+        product.setPret(requestDto.getPret());
+        product.setCantitate(requestDto.getCantitate());
 
         Product updatedProduct = productRepository.save(product);
         log.info("Product updated successfully with ID: {}", updatedProduct.getId());
@@ -138,7 +136,7 @@ public class ProductServiceImpl implements ProductService {
     @Transactional(readOnly = true)
     public List<ProductResponseDto> searchByName(String name) {
         log.info("Searching products by name: {}", name);
-        return productRepository.findByNameContainingIgnoreCase(name)
+        return productRepository.findByNumeContainingIgnoreCase(name)
                 .stream()
                 .map(this::convertToResponseDto)
                 .collect(Collectors.toList());
@@ -148,7 +146,7 @@ public class ProductServiceImpl implements ProductService {
     @Transactional(readOnly = true)
     public List<ProductResponseDto> findByCategory(String category) {
         log.info("Finding products by category: {}", category);
-        return productRepository.findByCategory(category)
+        return productRepository.findByCategorie(category)
                 .stream()
                 .map(this::convertToResponseDto)
                 .collect(Collectors.toList());
@@ -158,7 +156,7 @@ public class ProductServiceImpl implements ProductService {
     @Transactional(readOnly = true)
     public List<ProductResponseDto> findByPriceRange(BigDecimal minPrice, BigDecimal maxPrice) {
         log.info("Finding products by price range: {} - {}", minPrice, maxPrice);
-        return productRepository.findByPriceBetween(minPrice, maxPrice)
+        return productRepository.findByPretBetween(minPrice, maxPrice)
                 .stream()
                 .map(this::convertToResponseDto)
                 .collect(Collectors.toList());
@@ -168,7 +166,7 @@ public class ProductServiceImpl implements ProductService {
     @Transactional(readOnly = true)
     public List<ProductResponseDto> searchByNameAndPrice(String name, BigDecimal minPrice, BigDecimal maxPrice) {
         log.info("Searching products by name: {} and price range: {} - {}", name, minPrice, maxPrice);
-        return productRepository.findByNameAndPriceRange(name, minPrice, maxPrice)
+        return productRepository.findByNumeAndPretRange(name, minPrice, maxPrice)
                 .stream()
                 .map(this::convertToResponseDto)
                 .collect(Collectors.toList());
